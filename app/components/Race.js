@@ -1,7 +1,7 @@
 var React = require('react');
 var NavBar = require('./NavBar');
 var RacerList = require('./RacerList');
-var Map = require('./Map');
+var RaceMap = require('./Map');
 var Timer = require('./Timer');
 
 var http = require('rest');
@@ -42,13 +42,16 @@ var Race = React.createClass({
 	//need to map buttons onClick to actions
 
 	render: function(){
+		var checkInRace = function(){
+			this.props.raceAction.checkIn(this.props.user._id || "56972c9fda7c03ae0a87b44e", this.props.activeRace._id, this.props.activeRace.racers)
+		}.bind(this);
+
 		return (
 			<div className="race-view">
 				<h1>Race</h1>
-				<Map {...this.props} />
-				<Timer {...this.props} />
-				<button className="checkin-race">Check In</button>
-				<button className="cancel-race">Cancel</button>
+				<RaceMap {...this.props} />
+				<button className="checkin-race" onClick={checkInRace}>Check In</button>
+				<button className="cancel-race" onClick={this.props.raceAction.cancelRace}>Cancel</button>
 				<h3>Results: {this.props.activeRace.name}</h3>
 				<RacerList racers={this.props.activeRace.racers} />
 			</div>

@@ -1,7 +1,6 @@
 var React = require('react');
 
 
-
 var Map = React.createClass({
  
 
@@ -23,6 +22,7 @@ var Map = React.createClass({
 
 
   componentDidMount(){
+    console.log('POOP',this.props);
     var self = this;
     var map = new GMaps({
       el: '#map',

@@ -6,6 +6,7 @@ var ACTION_TYPE = require('../constants').action.ACTION_TYPE;
 var CHECK_IN = require('../constants').action.CHECK_IN;
 var TIMER_FINISH = require('../constants').action.TIMER_FINISH;
 var SELECT_RACE = require('../constants').action.SELECT_RACE;
+var CANCEL_RACE = require('../constants').action.CANCEL_RACE;
 
 var initial = {
   racers: [],
@@ -26,17 +27,25 @@ function activeRaceReducer (state, action) {
         checkedIn: true
       });
     case SELECT_RACE:
+      console.log('SELECT_RACE',action);
       return _.extend({}, state, {
         name: action.payload.name,
         racers: action.payload.racers,
         waymarks: action.payload.waymarks,
         startTime: action.payload.time,
-        results: action.payload.results
+        results: action.payload.results,
+        _id: action.payload._id
       });
+    case CANCEL_RACE:
+      return _.extend({}, state, {
+        cancelled: true,
+        ended: true
+      })
     case TIMER_FINISH:
       return _.extend({}, state, {
         started: true
       });
+
     default:
       return state;
   }

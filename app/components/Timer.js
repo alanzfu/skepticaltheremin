@@ -9,6 +9,7 @@ var Timer = React.createClass({
 	componentDidUpdate: function(){
 		var currentTime = new Date();
 		console.log('datetime timer',currentTime);
+		//when the timer is at 0, emit startEvent 
 	},
 	render: function(){
 	}
