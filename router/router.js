@@ -137,6 +137,15 @@ router.route('/users/:user_id/races/:race_id')
       res.json(updatedRace);
     })
   })
+  .get(function(req, res) {
+    var race_id = req.params.race_id;
+    raceController.find({_id: race_id}, function(err, singleRace) {
+      if (err) {
+        res.json({err: err});
+      }
+      res.json(singleRace);
+    });
+  })
 
 
 
