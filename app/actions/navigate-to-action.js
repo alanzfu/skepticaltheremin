@@ -1,7 +1,7 @@
 'use strict';
 
 var http = require('rest');
-var createdRacesAction = require('./index.js').createdRacesAction
+var createdRacesAction = require('./created-races-action');
 
 var NAV_CREATE_RACE = require('../constants').action.NAV_CREATE_RACE;
 var NAV_CREATED_RACES = require('../constants').action.NAV_CREATED_RACES;
@@ -14,29 +14,31 @@ var store = require('../store/configureStore');
   //NAV_SUMMARY, NAV_RACE
 
 var navigateCreateRace = function () {
-  console.log('create action reached');
 	return {
 		type: NAV_CREATE_RACE
 	}
 }
 
 var navigateCreatedRaces = function (userId) {
-	var options = {
-		method: 'GET',
-		uri: '/users/' + userId + '/races'
-	}
+	return function (dispatch) {
+		var options = {
+			method: 'GET',
+			uri: '/users/' + userId + '/races'
+		}
 
-	http(options)
-		.then(function (parsedBody) {
-			dispatch(createdRacesAction.createdRacesSuccess(parsedBody));
-		})
-		.catch(function(error){
-			console.log('error getting created races || navigate-to-action.js',error);
-			return error;
-		})
+		http(options)
+			.then(function (parsedBody) {
+				dispatch(createdRacesAction.createdRacesSuccess(parsedBody));
+				dispatch({
+					type: NAV_CREATED_RACES
+				});
+			})
+			.catch(function(error){
+				console.log('error getting created races || navigate-to-action.js',error);
+				return error;
+			})
 
-	return {
-		type: NAV_CREATED_RACES
+		
 	}
 }
 

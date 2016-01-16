@@ -128,8 +128,7 @@ router.route('/users/:user_id/races/:race_id')
   //User has added themselves to the racers on client side, and now editing the race model
   .put(function(req, res) {
     var race_id = req.params.race_id;
-    var newRace = req.body[0];
-
+    var newRace = req.body;
     raceController.updateRace({_id: race_id}, newRace, function (err, updatedRace) {
       if (err) {
         res.json({err: err});
@@ -174,6 +173,7 @@ router.route('/maps/:username')
   .put(function (req, res) {
     var username = req.params.username;
     var newpin = req.body;
+
 
     if(JSON.stringify(newpin) !== JSON.stringify({})){  
       userController.updatePins({username: username}, newpin, function(err, pins){

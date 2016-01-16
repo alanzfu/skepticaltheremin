@@ -124,7 +124,8 @@ exports.findOne = function (raceIdObj, callback) {
 }
 
 exports.updateRace = function (queryParams, newRace, callback) {
-	Race.findOneAndUpdate(queryParams, newRace, function (err, updatedRace) {
+	console.log('before update!',queryParams,newRace);
+	Race.findOneAndUpdate(queryParams, {$set:newRace}, function (err, updatedRace) {
 		if (err) {
 			callback(err);
 			return;

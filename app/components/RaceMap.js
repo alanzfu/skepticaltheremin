@@ -1,28 +1,10 @@
 var React = require('react');
 
 
-
-var Map = React.createClass({
- 
-
-  // updateCurrentLocation(){
-  //   if(this.state.previousMarker){
-  //     this.state.previousMarker.setIcon({
-  //       path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-  //       strokeColor: "red",
-  //       scale: 5
-  //     });
-  //   }
-  //   this.state.currentMarker.setIcon({
-  //     path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-  //     strokeColor: "green",
-  //     scale: 5
-  //   });
-  //   this.state.previousMarker = this.state.currentMarker;
-  // },
-
+var RaceMap = React.createClass({
 
   componentDidMount(){
+    console.log('POOP',this.props);
     var self = this;
     var map = new GMaps({
       el: '#map',
@@ -89,7 +71,6 @@ var Map = React.createClass({
     
 
   render(){
-
     return (
       <div>
         <div className="map-holder">
@@ -102,4 +83,4 @@ var Map = React.createClass({
 
 });
 
-module.exports = Map;
+module.exports = RaceMap;

@@ -26,14 +26,12 @@ var CreateRaceForm = React.createClass({
 
   handleSubmit(e){
     e.preventDefault();
-    console.log(e);
      this.props.publishAction.publishRace({
       name:e.target[0].value,
       date: e.target[1].value.split("/").join(""),
       time:e.target[2].value.split(":").join("") + '00',
       waymarks: this.props.newRace.waymarks
       })
-
     //e.target is array of internal inputs
     //e.g. e.target[0].value === "Race Name" by default
     //dispatch(index.publishAction.publishRace({stuff}));

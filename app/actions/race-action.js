@@ -4,8 +4,11 @@ var START_RACE = require('../constants').action.START_RACE;
 var FINISH_RACE = require('../constants').action.FINISH_RACE;
 var CANCEL_RACE = require('../constants').action.CANCEL_RACE;
 var CHECK_IN = require('../constants').action.CHECK_IN;
+var CHECK_IN_SUCCESS = require('../constants').action.CHECK_IN_SUCCESS;
 var ADD_AVAILABLE_RACES = require('../constants').action.ADD_AVAILABLE_RACES;
 var SELECT_RACE = require('../constants').action.SELECT_RACE;
+
+
 
 var http = require('rest');
 var mime = require('rest/interceptor/mime');
@@ -21,32 +24,46 @@ var startRace = function () {
 	}
 }
 
+var checkInSuccess = function(payload){
+	return {
+		type: CHECK_IN_SUCCESS,
+		payload: payload
+	}
+}
+
 var checkIn = function (userId, activeRaceId, racers) {
 	//need to get most recent version of the racer value
-	var currentUser = userId;
-	
-	var getOptions = {
-		method: 'GET',
-		path: '/api/users/' + currentUser + '/races/' + activeRaceId
-	}
-
-	http(getOptions)
-	.then(function(updatedRace){
-		var putOptions = {
-			method: 'PUT',
-			path: '/api/users/'+currentUser+'/races/' + activeRaceId,
-			entity: {
-				racers: updatedRace.racers.concat(currentUser)
-			}
-		}
-		return http(putOptions);
-	})
-	.then(function(checkedInRace){
+	return function(dispatch){
+		var currentUser = userId;
 		
-	})
+		var getOptions = {
+			method: 'GET',
+			path: '/api/users/' + currentUser + '/races/' + activeRaceId
+		}
 
-	return {
-		type: CHECK_IN
+		http(getOptions)
+			.then(function(updatedRace){
+				var updatedRacesList = updatedRace.entity[0].racers.concat(currentUser);
+				console.log(updatedRacesList);
+				var pathUrl = '/api/users/'+"56972c9fda7c03ae0a87b44e"+'/races/' + activeRaceId;
+				console.log(pathUrl);
+				var putOptions = {
+					method: 'PUT',
+					path: pathUrl,
+					entity: {
+						racers: updatedRacesList
+					}
+				}
+				return http(putOptions);
+			})
+			.then(function(checkedInRace){
+				console.log('checkedInRace', checkedInRace.entity)
+				dispatch(checkInSuccess(checkedInRace.entity));
+				dispatch({type:'CHECK_IN'});
+			})
+			.catch(function(error){
+				console.log(error, 'error updating');
+			});
 	}
 }
 
@@ -84,5 +101,6 @@ module.exports = {
 	cancelRace: cancelRace,
 	addAvailableRaces: addAvailableRaces,
 	selectRace: selectRace,
-	checkIn, checkIn
+	checkIn, checkIn,
+	checkInSuccess, checkInSuccess
 }

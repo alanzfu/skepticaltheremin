@@ -1,7 +1,7 @@
 var React = require('react');
 var NavBar = require('./NavBar');
 var RacerList = require('./RacerList');
-var RaceMap = require('./Map');
+var RaceMap = require('./RaceMap');
 var Timer = require('./Timer');
 
 var http = require('rest');
@@ -31,7 +31,6 @@ var Race = React.createClass({
 
 			http(options)
 				.then(function(results){
-					console.log(that.props);
 					var availableRaces = results.entity;
 					that.props.raceAction.addAvailableRaces(availableRaces); //race action that maps to user-reducer
 				});
@@ -52,6 +51,7 @@ var Race = React.createClass({
 				<RaceMap {...this.props} />
 				<button className="checkin-race" onClick={checkInRace}>Check In</button>
 				<button className="cancel-race" onClick={this.props.raceAction.cancelRace}>Cancel</button>
+				<button className="finish-race" onClick={this.props.raceAction.finishRace}>Finish Race</button>
 				<h3>Results: {this.props.activeRace.name}</h3>
 				<RacerList racers={this.props.activeRace.racers} />
 			</div>
